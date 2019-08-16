@@ -1,5 +1,10 @@
 # -*- coding:utf8 -*-
 # from download import NoProxy, Abuyun, Dashenip
+import settings
+import sys
+BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
+sys.path.append(BASE_PATH)
+
 from multiprocessing import Pool, Lock
 import json
 import csv
@@ -7,9 +12,8 @@ import pymysql
 import time
 import logging
 from config.download import NoProxy, Abuyun, Dashenip
-import settings
 
-BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
+
 
 # logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('main')

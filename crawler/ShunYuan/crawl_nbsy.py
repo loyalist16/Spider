@@ -1,12 +1,15 @@
+# -*- coding:utf8 -*-
+import settings
+import sys
+BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
+sys.path.append(BASE_PATH)
+
 from multiprocessing import Pool,Lock
 import json
 import csv, time
 from config.download import Abuyun, NoProxy, Dashenip
 import pymysql
 import logging
-import settings
-
-BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
 
 # 通用代理IP 下载模块
 # download = Download()
