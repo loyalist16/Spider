@@ -1,0 +1,202 @@
+[
+  {
+    "port_code": "CNSHA",
+    "port_name": "SHANGHAI",
+    "port_cname": "上海"
+  },
+  {
+    "port_code": "CNSZX",
+    "port_name": "SHENZHEN",
+    "port_cname": "深圳"
+  },
+  {
+    "port_code": "THLCB",
+    "port_name": "Laem Chabang",
+    "port_cname": "林查班"
+  },
+  {
+    "port_code": "IDSUB",
+    "port_name": "Surabaya",
+    "port_cname": "泗水"
+  },
+  {
+    "port_code": "VNHPH",
+    "port_name": "Haiphong",
+    "port_cname": "海防市"
+  },
+  {
+    "port_code": "IDJKT",
+    "port_name": "Jakarta Utc1",
+    "port_cname": "雅加达"
+  },
+  {
+    "port_code": "KHPNH",
+    "port_name": "Phnom Penh",
+    "port_cname": "金边"
+  },
+  {
+    "port_code": "THLKR",
+    "port_name": "Lat Krabang",
+    "port_cname": "拉塔克拉班"
+  },
+  {
+    "port_code": "MYTPP",
+    "port_name": "Tanjung Pelepas",
+    "port_cname": "丹戎帕拉帕斯港"
+  },
+  {
+    "port_code": "IDSRG",
+    "port_name": "Semarang",
+    "port_cname": "三宝垄"
+  },
+  {
+    "port_code": "MYPAG",
+    "port_name": "Pasir Gudang",
+    "port_cname": "巴西古荡"
+  },
+  {
+    "port_code": "KHKOS",
+    "port_name": "Sihanoukville",
+    "port_cname": "西哈努克"
+  },
+  {
+    "port_code": "VNHCM",
+    "port_name": "Hochiminh City",
+    "port_cname": "胡志明市"
+  },
+  {
+    "port_code": "MYPKG",
+    "port_name": "Port Kelang",
+    "port_cname": "巴生"
+  },
+  {
+    "port_code": "MYPEN",
+    "port_name": "Penang",
+    "port_cname": "槟城"
+  },
+  {
+    "port_code": "IDJKT",
+    "port_name": "Jakarta Utc1",
+    "port_cname": "雅加达"
+  },
+  {
+    "port_code": "CNZHE",
+    "port_name": "ZHENJIANG",
+    "port_cname": "镇江"
+  },
+  {
+    "port_code": "CNJGY",
+    "port_name": "JIANGYIN",
+    "port_cname": "江阴"
+  },
+  {
+    "port_code": "CNZJG",
+    "port_name": "ZHANGJIAGANG",
+    "port_cname": "张家港"
+  },
+  {
+    "port_code": "CNWHA",
+    "port_name": "WUHAN",
+    "port_cname": "武汉"
+  },
+  {
+    "port_code": "CNCGZ",
+    "port_name": "CHANGZHOU",
+    "port_cname": "常州"
+  },
+  {
+    "port_code": "CNNTG",
+    "port_name": "NANTONG",
+    "port_cname": "南通"
+  },
+  {
+    "port_code": "CNNKG",
+    "port_name": "NANJING",
+    "port_cname": "南京"
+  },
+  {
+    "port_code": "CNWUH",
+    "port_name": "WUHU",
+    "port_cname": "芜湖"
+  },
+  {
+    "port_code": "CNTCG",
+    "port_name": "TAICANG",
+    "port_cname": "太仓"
+  },
+  {
+    "port_code": "CNTAZ",
+    "port_name": "TAIZHOU",
+    "port_cname": "泰州"
+  },
+  {
+    "port_code": "CNYGZ",
+    "port_name": "YANGZHOU",
+    "port_cname": "扬州"
+  },
+  {
+    "port_code": "CNYTN",
+    "port_name": "YANTIAN",
+    "port_cname": "深圳盐田"
+  },
+  {
+    "port_code": "CNSHE",
+    "port_name": "SHEKOU",
+    "port_cname": "深圳蛇口"
+  },
+  {
+    "port_code": "CNCIW",
+    "port_name": "CHIWAN",
+    "port_cname": "深圳赤湾"
+  },
+  {
+    "port_code": "CNDCW",
+    "port_name": "Da Chan Bay",
+    "port_cname": "深圳大铲湾"
+  },
+  {
+    "port_code": "CHNNS",
+    "port_name": "NANSHA",
+    "port_cname": "广州南沙"
+  },
+  {
+    "port_code": "CNNBO",
+    "port_name": "NINGBO",
+    "port_cname": "宁波"
+  },
+  {
+    "port_code": "CNTAO",
+    "port_name": "QINGDAO",
+    "port_cname": "青岛"
+  },
+  {
+    "port_code": "CNTXG",
+    "port_name": "TIANJIN",
+    "port_cname": "天津"
+  },
+  {
+    "port_code": "CNDLC",
+    "port_name": "DALIAN",
+    "port_cname": "大连"
+  },
+  {
+    "port_code": "CNZPU",
+    "port_name": "ZHAPU",
+    "port_cname": "乍浦.嘉兴"
+  },
+  {
+    "port_code": "CNXMN",
+    "port_name": "XIAMEN",
+    "port_cname": "厦门"
+  },
+  {
+    "port_code": "HKHKG",
+    "port_name": "Hong Kong",
+    "port_cname": "香港"
+  },
+  {
+    "port_code": "AASEA",
+    "port_name": "SEA",
+    "port_cname": "东南亚"
+  }
+]
