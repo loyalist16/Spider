@@ -1,10 +1,12 @@
 # -*- coding:utf8 -*-
 # from download import NoProxy, Abuyun, Dashenip
-import settings
-import sys
-BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
-sys.path.append(BASE_PATH)
+import sys, os
+now = os.path.dirname("__file__")  # 当前目录
+last = os.path.abspath(os.path.join(now, os.path.pardir)) # 上一级目录
+last_last = os.path.abspath(os.path.join(last, os.path.pardir)) # 上上一级目录
+sys.path.append(last_last)
 
+import settings
 from multiprocessing import Pool, Lock
 import json
 import csv
@@ -14,6 +16,7 @@ import logging
 from config.download import NoProxy, Abuyun, Dashenip
 
 
+BASE_PATH = settings.BASE_PATH # E:\workdir\Spider
 
 # logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('main')
