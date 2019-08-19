@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 # from download import NoProxy, Abuyun, Dashenip
 import sys, os
-now = os.path.dirname("__file__")  # 当前目录
+now = os.path.dirname(__file__)  # 当前目录
 last = os.path.abspath(os.path.join(now, os.path.pardir)) # 上一级目录
 last_last = os.path.abspath(os.path.join(last, os.path.pardir)) # 上上一级目录
 sys.path.append(last_last)
@@ -43,7 +43,7 @@ with open(file_name1,'w', newline='', encoding='utf8') as f:
     csv_writer.writerow(szhg_headers)
 
 # 创建附加费表
-surcharge_headers = ['id', '附加费', '币种', '20底', '40底', '40HQ底', '单票', '付款方式']
+surcharge_headers = ['id', '附加费代码', '附加费名称', '船司', '航线', '起运港', '目的港', '币种', '20底', '40底', '40HQ底', '单票', '付款方式']
 file_name2 = BASE_PATH + '/result_file/haiguang/szhg_surcharge-' + time.strftime("%Y-%m-%d",time.localtime()) + '.csv'
 with open(file_name2,'w', newline='', encoding='utf8') as f:
     csv_writer = csv.writer(f)
@@ -93,6 +93,7 @@ def get_page_message(pageno):
             all_message_list = []  #存储所有的详细信息
             all_foreign_fileds =[]  #存储所有的外键字段
             all_foreign_keys = []  #存储所有的外键
+            all_surcharge_needs = []   #存储附加费字段所需的字段
 
             contents = res.get('rows')
             for content in contents:
@@ -105,13 +106,13 @@ def get_page_message(pageno):
                 data['routeCode'] = content.get('routeCode')
                 data['line'] = content.get('routeName')
                 data['voyage'] = content.get('voyage')
-                data['leaveday'] = content.get('schedule')
+                data['schedule'] = content.get('cutoffDay') + '/' + content.get('schedule')
                 data['transfer'] = content.get('transportNameEn')
                 data['minato'] = content.get('wharfNameEn')
                 data['GP20'] = content.get('price20')
                 data['GP40'] = content.get('price40')
                 data['HC40'] = content.get('price40hq')
-                data['begindate'] = content.get('beginDateStr')
+                data['startdate'] = content.get('beginDateStr')
                 data['enddate'] = content.get('endDateStr')
                 data['supplier'] = content.get('supplierName')
                 data['remark'] = content.get('remarkIn')
@@ -119,6 +120,14 @@ def get_page_message(pageno):
                 data['remark2'] = content.get('descWeight')
                 # print(f"data>>>>",data)
                 all_message_list.append(data)
+
+                surcharge_needs = {}
+                surcharge_needs['company'] = content.get('shippingName')
+                surcharge_needs['origination'] = content.get('portStartNameEn')
+                surcharge_needs['destination'] = content.get('portEndNameEn')
+                surcharge_needs['line'] = content.get('routeName')
+
+                all_surcharge_needs.append(surcharge_needs)
 
                 surcharge_fields = {}
                 surcharge_fields['portStartId'] = content.get('portStartId')
@@ -133,14 +142,14 @@ def get_page_message(pageno):
                 all_foreign_keys.append(content.get('freightFclId'))
                 # print(content.get('freightFclId'))
             logging.info(f'第{pageno}页爬取完成')
-            return all_message_list, all_foreign_fileds, all_foreign_keys
+            return all_message_list, all_foreign_fileds, all_foreign_keys, all_surcharge_needs
         else:
             return None, None ,None
     else:
         return None, None, None
 
 # 附加费信息
-def get_surcharge(surcharge_fields, freightFclId):
+def get_surcharge(surcharge_fields, freightFclId, surcharge_needs):
     '''
     :param surcharge_fields: 附加费data字段
     :param freightFclId: 附加费外键
@@ -155,12 +164,17 @@ def get_surcharge(surcharge_fields, freightFclId):
             res = json.loads(response.text)
             surChargeList = res.get('surChargeList')
 
-            need_surcharges = [] #需要的附加费列表
+            all_surcharges = [] #需要的附加费列表
 
             for surCharges in surChargeList:
                 surcharge = {}
                 surcharge['freightFclId'] = freightFclId
                 surcharge['chargeNameCode'] = surCharges.get('chargeNameCode')
+                surcharge['chargeName'] = surCharges.get('chargeName')
+                surcharge['company'] = surcharge_needs.get('company')
+                surcharge['line'] = surcharge_needs.get('line')
+                surcharge['origination'] = surcharge_needs.get('origination')
+                surcharge['destination'] = surcharge_needs.get('destination')
                 surcharge['currencyStr'] = surCharges.get('currencyStr')
                 surcharge['price20'] = surCharges.get('price20')
                 surcharge['price40'] = surCharges.get('price40')
@@ -168,8 +182,8 @@ def get_surcharge(surcharge_fields, freightFclId):
                 surcharge['billPrice'] = surCharges.get('billPrice')
                 surcharge['payTypeStr'] = surCharges.get('payTypeStr')
 
-                need_surcharges.append(surcharge)
-            return need_surcharges
+                all_surcharges.append(surcharge)
+            return all_surcharges
         else:
             return None
     else:
@@ -211,7 +225,7 @@ def save2csv(data, filePath):
 # 抓取逻辑
 def crawl(pageNo):
 
-    all_message_list, all_foreign_fileds, all_foreign_keys = get_page_message(pageNo)
+    all_message_list, all_foreign_fileds, all_foreign_keys, all_surcharge_needs = get_page_message(pageNo)
     # print("all_message_list>>>",all_message_list)
     if all_message_list:
         for message in all_message_list:
@@ -221,7 +235,7 @@ def crawl(pageNo):
             lock.release()
 
         for i in range(len(all_foreign_keys)):
-            surcharges = get_surcharge(all_foreign_fileds[i], all_foreign_keys[i])
+            surcharges = get_surcharge(all_foreign_fileds[i], all_foreign_keys[i], all_surcharge_needs[i])
             if surcharges:
                 for surcharge in surcharges:
                     lock.acquire()
@@ -248,4 +262,4 @@ def main():
 if __name__ == '__main__':
     start = time.time()
     main()
-    logger.info(f"总耗时{time.time()-start}秒")
+    logger.critical(f"总耗时{time.time()-start}秒")

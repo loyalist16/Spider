@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 
 import sys, os
-now = os.path.dirname("__file__")  # 当前目录
+now = os.path.dirname(__file__)  # 当前目录
 last = os.path.abspath(os.path.join(now, os.path.pardir)) # 上一级目录
 last_last = os.path.abspath(os.path.join(last, os.path.pardir)) # 上上一级目录
 sys.path.append(last_last)
@@ -43,7 +43,7 @@ with open(file_name1,'w', newline='', encoding='utf8') as f:
     csv_writer.writerow(nbsy_headers)
 
 # 创建附加费表
-surcharge_headers = ['id', '附加费', '单位', '币种', '20底', '40底', '40HQ底', '单票']
+surcharge_headers = ['id', '附加费代码', '附加费名称', '船司', '航线', '起运港', '目的港', '单位', '币种', '20底', '40底', '40HQ底', '单票']
 file_name2 = BASE_PATH + '/result_file/shunyuan/nbsy_surcharge-' + time.strftime("%Y-%m-%d",time.localtime()) + '.csv'
 with open(file_name2,'w', newline='', encoding='utf8') as f:
     csv_writer = csv.writer(f)
@@ -83,8 +83,11 @@ def get_public_price(response):
         if response.text:
             jsonDict = json.loads(response.text)
             contents = jsonDict.get('freighList')
+
             page_message_list = []   # 整页信息列表
             foreign_list = []   # 当前页面外键列表
+            all_surcharge_needs = []  # 存储附加费字段所需的字段
+
             if contents:
                 for content in contents:
                     data = {}
@@ -96,22 +99,30 @@ def get_public_price(response):
                     data['routeCode'] = content.get('searoute_code')
                     data['line'] = content.get('carrier_sealine')
                     data['voyage'] = content.get('sailtime')
-                    data['leaveday'] = content.get('weekCycle')
+                    data['schedule'] = content.get('weekCycle')
                     data['transfer'] = content.get('transferport_en')
                     data['minato'] = content.get('pier_en')
                     data['GP20'] = content.get('internetsellprice_20gp')
                     data['GP40'] = content.get('internetsellprice_40gp')
                     data['HC40'] = content.get('internetsellprice_40hq')
-                    data['begindate'] = content.get('bottomStartTime')
+                    data['startdate'] = content.get('bottomStartTime')
                     data['enddate'] = content.get('bottomEenTime')
                     data['supplier'] = '顺圆'
                     data['remark'] = content.get('d_remark_in')
                     data['remark1'] = content.get('d_remark_out')
                     data['remark2'] = content.get('desc_weight')
 
+                    surcharge_needs = {}
+                    surcharge_needs['company'] = content.get('carrier')
+                    surcharge_needs['origination'] = content.get('start_port_en')
+                    surcharge_needs['destination'] = content.get('dest_port_en')
+                    surcharge_needs['line'] = content.get('carrier_sealine')
+
+                    all_surcharge_needs.append(surcharge_needs)
+
                     page_message_list.append(data)
                     foreign_list.append(data['id'])
-                return page_message_list,foreign_list
+                return page_message_list, foreign_list, all_surcharge_needs
             else:
                 return None,None
         else:
@@ -120,7 +131,7 @@ def get_public_price(response):
         return None, None
 
 # 拿到附加费信息
-def get_surcharge(foreign_key):
+def get_surcharge(foreign_key, surcharge_needs):
     '''
     当前航线的附加费列表 line_surcharge_list
     '''
@@ -149,6 +160,11 @@ def get_surcharge(foreign_key):
                 surcharge = {}
                 surcharge['freightFclId'] = foreign_key
                 surcharge['chargeNameCode'] = surCharges.get('cost_code')
+                surcharge['chargeName'] = surCharges.get('cost_name')
+                surcharge['company'] = surcharge_needs.get('company')
+                surcharge['line'] = surcharge_needs.get('line')
+                surcharge['origination'] = surcharge_needs.get('origination')
+                surcharge['destination'] = surcharge_needs.get('destination')
                 surcharge['unit'] = surCharges.get('unit')
                 surcharge['currencyStr'] = surCharges.get('currency_code')
                 surcharge['price20'] = surCharges.get('price_20gp')
@@ -200,7 +216,7 @@ def save2csv(data, filePath):
 def crawler(startPortCode, endPortCode):
 
     response = get_all_messages(startPortCode, endPortCode)
-    page_message_list, foreign_list = get_public_price(response)
+    page_message_list, foreign_list, all_surcharge_needs = get_public_price(response)
     if page_message_list:
         lock.acquire()
         for page_message in page_message_list:
@@ -210,9 +226,9 @@ def crawler(startPortCode, endPortCode):
             save2csv(page_message, file_name1)
         lock.release()
 
-        for foreign in foreign_list:
-            line_surcharge_list = get_surcharge(foreign)
+        for foreign, surcharge_needs in zip(foreign_list, all_surcharge_needs):
 
+            line_surcharge_list = get_surcharge(foreign, surcharge_needs)
             lock.acquire()
             for line_surcharge in line_surcharge_list:
                 # lock.acquire()
@@ -226,7 +242,13 @@ def crawler(startPortCode, endPortCode):
 def run():
 
     pool = Pool(processes=6)
-    with open("all_end_port.json", 'r', encoding='utf8') as f:
+
+    # 在windows上运行
+    # with open("all_end_port.json", 'r', encoding='utf8') as f:
+    #     strings = f.read()
+
+    # 在linux上运行
+    with open("workdir/Spider/crawler/ShunYuan/all_end_port.json", 'r', encoding='utf8') as f:
         strings = f.read()
 
     all_lines = json.loads(strings)
@@ -241,6 +263,7 @@ def run():
     pool.join()
 
 if __name__ == '__main__':
+    start_time = time.time()
     run()
-
+    logger.critical(f"共耗时{time.time()-start_time}秒")
 
