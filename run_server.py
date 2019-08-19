@@ -4,7 +4,7 @@ import settings
 
 BASE_PATH = settings.BASE_PATH
 port = 8080
-host = ('localhost', port)
+host = ('0.0.0.0', port)
 
 if __name__ == "__main__":
     os.chdir(BASE_PATH + "/result_file/")
