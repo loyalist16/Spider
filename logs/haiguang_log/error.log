@@ -1,0 +1,24 @@
+2019-08-19 18:11:34,538 - main - ERROR - It's an Error:
+Traceback (most recent call last):
+  File "workdir/Spider/crawler/HaiGuang/crawl_szhg.py", line 212, in save2mysql
+    db.commit()
+  File "/usr/local/lib/python3.6/dist-packages/pymysql/connections.py", line 420, in commit
+    self._read_ok_packet()
+  File "/usr/local/lib/python3.6/dist-packages/pymysql/connections.py", line 394, in _read_ok_packet
+    pkt = self._read_packet()
+  File "/usr/local/lib/python3.6/dist-packages/pymysql/connections.py", line 657, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/usr/local/lib/python3.6/dist-packages/pymysql/connections.py", line 691, in _read_bytes
+    data = self._rfile.read(num_bytes)
+  File "/usr/lib/python3.6/socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+2019-08-20 00:07:55,006 - main - CRITICAL - 总耗时473.19101119041443秒
+2019-08-21 10:18:07,732 - main - CRITICAL - 总耗时486.18812465667725秒
+2019-08-21 10:43:11,417 - main - CRITICAL - 总耗时444.03849244117737秒
+2019-08-22 00:07:21,887 - main - CRITICAL - 总耗时440.02174520492554秒
+2019-08-23 00:07:11,983 - main - CRITICAL - 总耗时430.5107696056366秒
+2019-08-24 00:08:15,903 - main - CRITICAL - 总耗时493.7208297252655秒
+2019-08-25 00:07:54,783 - main - CRITICAL - 总耗时472.8883755207062秒
+2019-08-26 00:07:49,360 - main - CRITICAL - 总耗时467.17440700531006秒
+2019-08-27 00:07:14,557 - main - CRITICAL - 总耗时433.11547207832336秒
