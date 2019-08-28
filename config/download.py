@@ -80,7 +80,7 @@ class Abuyun():
                 self.logger.error('代理无效,将使用本地IP')
                 return requests.get(url, headers=headers_ua, proxies=None, timeout=5 )
 
-    def post(self, url, headers, data,num_retry=5):
+    def post(self, url, headers, data,num_retry=5, params=None):
         UA = random.choice(self.user_agents) ## 随机拿取 user-agent
         headers_ua = {"User-Agent": UA}
         headers_ua.update(headers)  ## 完整的 headers
@@ -102,18 +102,18 @@ class Abuyun():
         }
         try:
             self.logger.debug(f"当前使用代理：{proxies}")
-            response = requests.post(url, headers=headers_ua, data=data,timeout=5, proxies=proxies)
+            response = requests.post(url, headers=headers_ua, data=data,timeout=5, proxies=proxies, params=params)
             if response.status_code != 200:
-                return self.post(url, data, headers, num_retry)
+                return self.post(url, data, headers, num_retry, params)
             return response
         except:
             self.logger.warning(f"{url}连接错误，正在尝试重新连接,第{6-num_retry}次连接")
             if num_retry > 0:
                 time.sleep(3)
-                return self.post(url, data, headers, num_retry-1)
+                return self.post(url, data, headers, num_retry-1, params)
             else:
                 self.logger.error('代理无效,将使用本地IP')
-                return requests.post(url, headers=headers_ua, timeout=5, data=data)
+                return requests.post(url, headers=headers_ua, timeout=5, data=data, params=params)
 
 # 不使用代理ip
 class NoProxy():
@@ -175,23 +175,23 @@ class NoProxy():
             else:
                 return requests.get(url, headers=headers_ua, proxies=None, timeout=5)
 
-    def post(self, url, headers, data,num_retry=3):
+    def post(self, url, headers, data,num_retry=5, params=None):
         UA = random.choice(self.user_agents) ## 随机拿取 user-agent
         headers_ua = {"User-Agent": UA}
         headers_ua.update(headers)  ## 完整的 headers
 
         try:
-            response = requests.post(url, headers=headers_ua, data=data, timeout=5)
+            response = requests.post(url, headers=headers_ua, data=data, timeout=5 ,params=params)
             if response.status_code != 200:
-                return self.post(url, data, headers, num_retry)
+                return self.post(url, data, headers, num_retry ,params)
             return response
         except:
             self.logger.warning(f"{url}连接错误，正在尝试重新连接,第{6-num_retry}次连接")
             if num_retry > 0:
                 time.sleep(10)
-                return self.post(url, data, headers, num_retry-1)
+                return self.post(url, data, headers, num_retry-1, params)
             else:
-                return requests.post(url, headers=headers_ua, timeout=5, data=data)
+                return requests.post(url, headers=headers_ua, timeout=5, data=data, params=params)
 
 # 使用大神给的代理IP
 class Dashenip():
