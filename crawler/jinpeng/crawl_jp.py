@@ -26,7 +26,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 # 创建 jp 基本报价 csv表
-jp_headers = ['起运港', '目的港', 'LINE', '船公司', '船司简称', '船期', '20底', '40底', '40HQ底', '起始日期', '供应商', '备注', '备注1']
+jp_headers = ['起运港', '目的港', 'LINE', '船公司', '船司简称', '船期', '20底', '40底', '40HQ底', 'LSS', '起始日期', '供应商', '备注']
 file_name1 = BASE_PATH + '/result_file/jinpeng/jp-' + time.strftime("%Y-%m-%d",time.localtime()) + '.csv'
 with open(file_name1,'w', newline='', encoding='utf8') as f:
     csv_writer = csv.writer(f)
@@ -113,13 +113,15 @@ def get_message(line, result, flag):
     lss = result.xpath('./td[7]/text()')[0].strip()
     # 生效日
     date = result.xpath('./td[8]/text()')[0].strip()
+    # 供应商
+    supplier = "金鹏"
     # 备注
     remark = result.xpath('./td[10]/span/text()')
     if remark:
         remark = remark[0].strip()
     else:
         remark = ''
-    message = [origination, destination, line, company, companyCode, schedule, GP20, GP40, HC40, lss, date, remark]
+    message = [origination, destination, line, company, companyCode, schedule, GP20, GP40, HC40, lss, date, supplier, remark]
     return message, flag
 
 # 日本基航
@@ -155,13 +157,15 @@ def get_japan(line, result, flag):
     lss = result.xpath('./td[7]/text()')[0].strip()
     # 生效日
     date = result.xpath('./td[8]/text()')[0].strip()
+    # 供应商
+    supplier = "金鹏"
     # 备注
     remark = result.xpath('./td[10]/span/text()')
     if remark:
         remark = remark[0].strip()
     else:
         remark = ''
-    message = [origination, destination, line, company, companyCode, schedule, GP20, GP40, HC40, lss, date, remark]
+    message = [origination, destination, line, company, companyCode, schedule, GP20, GP40, HC40, lss, date, supplier,remark]
     return message, flag
 
 # 抓取
