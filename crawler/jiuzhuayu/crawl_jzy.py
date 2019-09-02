@@ -1,6 +1,6 @@
 # -*- coding:utf8 -*-
 import sys, os
-now = os.path.dirname("__file__")  # 当前目录
+now = os.path.dirname(__file__)  # 当前目录
 last = os.path.abspath(os.path.join(now, os.path.pardir)) # 上一级目录
 last_last = os.path.abspath(os.path.join(last, os.path.pardir)) # 上上一级目录
 sys.path.append(last_last)
