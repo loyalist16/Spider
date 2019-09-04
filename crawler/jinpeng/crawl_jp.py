@@ -63,9 +63,9 @@ def get_data(Cookie):
     response = requests.request("GET", url, headers=headers)
     html = etree.HTML(response.text)
     # __EVENTTARGET = html.xpath('//*[@id="__EVENTTARGET"]/@value')[0]
-    __EVENTARGUMENT = html.xpath('//*[@id="__EVENTARGUMENT"]/@value')[0]
+    __EVENTARGUMENT = ''
     __VIEWSTATE = html.xpath('//*[@id="__VIEWSTATE"]/@value')[0]
-    __VIEWSTATEENCRYPTED = html.xpath('//*[@id="__VIEWSTATEENCRYPTED"]/@value')[0]
+    __VIEWSTATEENCRYPTED = ''
     __EVENTVALIDATION = html.xpath('//*[@id="__EVENTVALIDATION"]/@value')[0]
     data = {
         "__EVENTARGUMENT": __EVENTARGUMENT,
