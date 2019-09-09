@@ -36,7 +36,9 @@ download = NoProxy()   # 未使用代理IP
 
 
 # 创建szhg基本报价 csv表
-szhg_headers = ['id', '起运港', '目的港', '船公司', '目的港挂靠', '航线代码', 'LINE', '航程', '船期', '中转港', '港区', '20底', '40底', '40HQ底', '起始日期', '结束日期', '供应商', '备注', '备注1', '备注2']
+szhg_headers = ['起运港', '目的港', '船公司', '目的港挂靠', '航线代码', 'LINE', '航程', '船期', '中转港', '港区', '20底', '40底', '40HQ底',
+                '特价', '起始日期', '开航日期', 'EBS','CIC','ISPS','DDF','CCL', 'CSS', 'PCS', 'THC', '供应商', '备注', '备注1', '备注2',
+                '中转港', '运价ID，不可以修改']
 file_name1 = BASE_PATH + '/result_file/haiguang/szhg-' + time.strftime("%Y-%m-%d",time.localtime()) + '.csv'
 with open(file_name1,'w', newline='', encoding='utf8') as f:
     csv_writer = csv.writer(f)
@@ -220,7 +222,17 @@ def save2mysql(data, table):
 def save2csv(data, filePath):
     with open(filePath, 'a+', newline='', encoding='utf8') as f:
         f_csv = csv.writer(f)
-        f_csv.writerow(list(data.values()))
+        li = [
+              data.get('origination'), data.get('destination'), data.get('company'),
+              data.get('port_of_call'), data.get('routeCode'), data.get('line'),
+              data.get('voyage'), data.get('schedule'), data.get('transfer'),
+              data.get('minato'), data.get('GP20'), data.get('GP40'),
+              data.get('HC40'), '', data.get('startdate'),data.get('enddate'),
+              '', '', '', '', '', '', '', '',
+              data.get('supplier'), data.get('remark'), data.get('remark1'),
+              data.get('remark2'), data.get('transfer'), data.get('id'),
+              ]
+        f_csv.writerow(li)
 
 # 抓取逻辑
 def crawl(pageNo):
