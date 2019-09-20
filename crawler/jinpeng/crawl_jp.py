@@ -43,9 +43,11 @@ def get_cookie():
     headers = {
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36",
         'Host': "www.jphy.com.cn",
+        'Referer': "https://www.google.com/",
+        'Upgrade-Insecure-Requests': '1'
     }
 
-    response = requests.request("GET", url, headers=headers)
+    response = requests.request("GET", url, headers=headers, timeout=15)
     Cookie = '; '.join(['='.join(item) for item in response.cookies.items()])
     return Cookie
 
@@ -53,14 +55,15 @@ def get_cookie():
 def get_data(Cookie):
     url = "http://www.jphy.com.cn/yj/frmYj2.aspx"
     headers = {
-        'Referer': "http://www.jphy.com.cn/",
+        'Referer': "http://www.jphy.com.cn/yj/frmYj2.aspx",
         'Host': "www.jphy.com.cn",
+        'Origin': "http://www.jphy.com.cn",
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
         'Upgrade-Insecure-Requests': "1",
         'Cookie': Cookie
     }
 
-    response = requests.request("GET", url, headers=headers)
+    response = requests.request("GET", url, headers=headers, timeout=15)
     html = etree.HTML(response.text)
     # __EVENTTARGET = html.xpath('//*[@id="__EVENTTARGET"]/@value')[0]
     __EVENTARGUMENT = ''
