@@ -38,11 +38,11 @@ with open(BASE_PATH +'/crawler/jinpeng/company.json', 'r', encoding='utf8') as f
 
 # 获取动态cookie
 def get_cookie():
-    url = "http://www.shflyingeagle.com/"
+    url = "http://www.jphy.com.cn/"
 
     headers = {
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36",
-        'Host': "www.shflyingeagle.com",
+        'Host': "www.jphy.com.cn",
     }
 
     response = requests.request("GET", url, headers=headers)
@@ -51,10 +51,10 @@ def get_cookie():
 
 # 获取 form-data 字段
 def get_data(Cookie):
-    url = "http://www.shflyingeagle.com/yj/frmYj2.aspx"
+    url = "http://www.jphy.com.cn/yj/frmYj2.aspx"
     headers = {
-        'Referer': "http://www.shflyingeagle.com/",
-        'Host': "www.shflyingeagle.com",
+        'Referer': "http://www.jphy.com.cn/",
+        'Host': "www.jphy.com.cn",
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
         'Upgrade-Insecure-Requests': "1",
         'Cookie': Cookie
@@ -170,14 +170,14 @@ def get_japan(line, result, flag):
 
 # 抓取
 def crawl(Cookie, data):
-    url = "http://www.shflyingeagle.com/yj/frmYj2.aspx"
+    url = "http://www.jphy.com.cn/yj/frmYj2.aspx"
     headers = {
         'Content-Type': "application/x-www-form-urlencoded",
-        'Referer': "http://www.shflyingeagle.com/yj/frmYj2.aspx",
-        'Host': "www.shflyingeagle.com",
+        'Referer': "http://www.jphy.com.cn/yj/frmYj2.aspx",
+        'Host': "www.jphy.com.cn",
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
         'Cookie': Cookie,
-        'Origin': "http://www.shflyingeagle.com",
+        'Origin': "http://www.jphy.com.cn",
         }
 
     response = requests.request("POST", url, data=data, headers=headers)
