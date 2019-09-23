@@ -20,8 +20,8 @@ logger.setLevel(level=logging.DEBUG)
 
 # Handler
 handler = logging.FileHandler(BASE_PATH + '/logs/jinpeng_log/error.log')
-handler.setLevel(logging.ERROR)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s >>>> %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
@@ -66,15 +66,15 @@ def get_data(Cookie):
     response = requests.request("GET", url, headers=headers, timeout=15)
     html = etree.HTML(response.text)
     # __EVENTTARGET = html.xpath('//*[@id="__EVENTTARGET"]/@value')[0]
-    __EVENTARGUMENT = ''
-    __VIEWSTATE = html.xpath('//*[@id="__VIEWSTATE"]/@value')[0]
-    __VIEWSTATEENCRYPTED = ''
-    __EVENTVALIDATION = html.xpath('//*[@id="__EVENTVALIDATION"]/@value')[0]
+    EVENTARGUMENT = ''
+    VIEWSTATE = html.xpath('//*[@id="__VIEWSTATE"]/@value')[0]
+    VIEWSTATEENCRYPTED = ''
+    EVENTVALIDATION = html.xpath('//*[@id="__EVENTVALIDATION"]/@value')[0]
     data = {
-        "__EVENTARGUMENT": __EVENTARGUMENT,
-        "__VIEWSTATE": __VIEWSTATE,
-        "__VIEWSTATEENCRYPTED": __VIEWSTATEENCRYPTED,
-        "__EVENTVALIDATION": __EVENTVALIDATION
+        "__EVENTARGUMENT": EVENTARGUMENT,
+        "__VIEWSTATE": VIEWSTATE,
+        "__VIEWSTATEENCRYPTED": VIEWSTATEENCRYPTED,
+        "__EVENTVALIDATION": EVENTVALIDATION
     }
     return data
 
@@ -195,6 +195,7 @@ def crawl(Cookie, data):
 def main(retry=3):
     try:
         Cookie = get_cookie()
+        logger.info("Cookie:",Cookie)
         data = get_data(Cookie)
         for i in range(0, 12):
             target = "lnkHx" + str(i)
